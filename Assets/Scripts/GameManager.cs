@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
         // To Test in Unity
         //Comment this block "unity" out when testing with rpi/hardware/mqtt
         #region unity
+/*
         ar = new ArrayList();
         ar.Add("1");
         ar.Add("0");
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
         ar.Add("0");
         ar.Add("1");
         ar.Add("0");
+*/
         #endregion
 
         for (int i = 0; i < ar.Count; i++)
