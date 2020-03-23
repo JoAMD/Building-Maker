@@ -30,31 +30,30 @@ public class GameManager : MonoBehaviour
 
         states = new List<bool>();
         ArrayList ar = Plugin.instance.jc.Call<ArrayList>("getStateInit");
-        // To Test using rpi/hardware/mqtt
-        /*
-        for (int i = 0; i < ar.Count; i++)
-        {
-            states.Add((int)ar[i] == 1 ? true : false);
-        }
-        */
 
         // To Test in Unity
-        states.Add(true);
-        states.Add(false);
-        states.Add(true);
-        states.Add(false);
-        states.Add(true);
-        states.Add(true);
-        states.Add(false);
-        states.Add(true);
-        states.Add(false);
-        states.Add(true);
-        states.Add(true);
-        states.Add(false);
-        states.Add(true);
-        states.Add(false);
-        states.Add(true);
+        //Comment this block "unity" out when testing with rpi/hardware/mqtt
+        #region unity
+        ar = new ArrayList();
+        ar.Add("1");
+        ar.Add("0");
+        ar.Add("1");
+        ar.Add("0");
+        ar.Add("1");
+        ar.Add("0");
+        ar.Add("1");
+        ar.Add("0");
+        ar.Add("1");
+        ar.Add("0");
+        ar.Add("1");
+        ar.Add("0");
+        #endregion
 
+        for (int i = 0; i < ar.Count; i++)
+        {
+            states.Add(int.Parse(ar[i].ToString()) == 1 ? true : false);
+        }
+        
         for (int i = 0; i < states.Count; i++)
             Debug.Log(states[i]);
 
