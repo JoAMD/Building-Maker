@@ -41,7 +41,9 @@ public class SpawnController : MonoBehaviour
         Plugin.instance.jc.Call("subscribeNewSwitch");
 
         Debug.Log("ctr = " + GameManager.instance.ctr);
-        Debug.Log("states[ctr] = " + GameManager.instance.states[GameManager.instance.ctr]);
+        Debug.Log("GameManager.instance.states.Count = " + GameManager.instance.states.Count);
+        if (GameManager.instance.states.Count > GameManager.instance.ctr)
+            Debug.Log("states[ctr] = " + GameManager.instance.states[GameManager.instance.ctr]);
 
         prop_clone.parent = ceiling;
     }

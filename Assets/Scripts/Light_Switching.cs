@@ -21,8 +21,9 @@ public class Light_Switching : MonoBehaviour
         parent = transform.parent;
         meshRenderer = parent.GetComponent<MeshRenderer>();
         meshRenderer.sharedMaterial = new_mat;
-
-        i = GameManager.instance.states[GameManager.instance.ctr];
+        
+        if (GameManager.instance.states.Count > GameManager.instance.ctr)
+            i = GameManager.instance.states[GameManager.instance.ctr];
         SwitchLights();
     }
 

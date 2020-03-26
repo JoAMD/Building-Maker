@@ -22,7 +22,8 @@ public class Fan_rotation : MonoBehaviour
 
     void Start()
     {
-        isTap = !GameManager.instance.states[GameManager.instance.ctr];
+        if(GameManager.instance.states.Count > GameManager.instance.ctr)
+            isTap = !GameManager.instance.states[GameManager.instance.ctr];
         MouseDownHelper();
     }
 

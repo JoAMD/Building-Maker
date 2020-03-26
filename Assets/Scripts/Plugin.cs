@@ -30,8 +30,11 @@ public class Plugin : MonoBehaviour
         jc = new AndroidJavaObject(pluginName);
         AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-        AndroidJavaObject context = activity.Call<AndroidJavaObject>("getApplicationContext");
-        jc.Call("setContext", context);
+        if(activity != null)
+        {
+            AndroidJavaObject context = activity.Call<AndroidJavaObject>("getApplicationContext");
+            jc.Call("setContext", context);
+        }
 
         //1.get initial on/off state so that app shows initially light on/off
         //use this to set ON OFF state inside UNITY
