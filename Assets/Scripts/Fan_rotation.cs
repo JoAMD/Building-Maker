@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fan_rotation : MonoBehaviour
+public class Fan_rotation : Prop
 {
     public Transform rotatable_part;
     float spinSpeed = 400.0f;
@@ -20,8 +20,9 @@ public class Fan_rotation : MonoBehaviour
         Plugin.instance.jc.Call("publish", gameObject.name[2]);
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         if(GameManager.instance.states.Count > GameManager.instance.ctr)
             isTap = !GameManager.instance.states[GameManager.instance.ctr];
         MouseDownHelper();

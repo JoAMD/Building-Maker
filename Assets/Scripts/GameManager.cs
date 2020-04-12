@@ -8,8 +8,19 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public int ctr = 0;
+    public int currRoomCtr = 0;
 
     public List<bool> states;
+
+    public Transform ceiling;
+
+    public Prop prop_being_held;
+
+    public SwitchView switchViewScript;
+
+    public Camera _cameraCurr;
+    public Camera _ceilingCamBelow;
+    public Camera _roomCam;
 
     void Awake()
     {
@@ -59,8 +70,11 @@ public class GameManager : MonoBehaviour
             Plugin.instance.jc.Call("unsubscribe");
     }
 
-    void Update()
+    public void RotateProp()
     {
-
+        if(prop_being_held != null)
+        {
+            prop_being_held.RotateProp();
+        }
     }
 }

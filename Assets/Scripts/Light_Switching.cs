@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Light_Switching : MonoBehaviour
+public class Light_Switching : Prop
 {
 
     public Texture tex1;
@@ -12,9 +12,9 @@ public class Light_Switching : MonoBehaviour
     private MeshRenderer meshRenderer;
     private Transform parent;
 
-    // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         //tex0 = transform.parent.GetComponent<MeshRenderer>().sharedMaterial.mainTexture;
         new_mat = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
         new_mat.mainTexture = tex0;
@@ -27,14 +27,9 @@ public class Light_Switching : MonoBehaviour
         SwitchLights();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnMouseDown()
     {
+        isMouseDown = true;
         SwitchLights();
     }
 

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tex1: {fileID: 2800000, guid: 42d78b1cada0478429a5a9232944abf9, type: 3}
   tex0: {fileID: 2800000, guid: e3109c0325fdf864585b4f98f71c18cf, type: 3}
+  i: 1
 --- !u!1 &3364770827969860919
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,12 +243,12 @@ PrefabInstance:
     - target: {fileID: 7645690582628414838, guid: c0d6616c7c1259246b4ffeddd88670d7,
         type: 3}
       propertyPath: m_Size.y
-      value: 6
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 7645690582628414838, guid: c0d6616c7c1259246b4ffeddd88670d7,
         type: 3}
       propertyPath: m_Center.y
-      value: -2.5
+      value: -9.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0d6616c7c1259246b4ffeddd88670d7, type: 3}

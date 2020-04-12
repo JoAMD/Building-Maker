@@ -5,35 +5,34 @@ using UnityEngine;
 public class SwitchView : MonoBehaviour
 {
 
-    public GameObject room;
+    public List<GameObject> rooms;
     public GameObject ceiling_view;
     private bool i = true;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void SwitchViewBtn()
     {
         if (i)
         {
-            room.SetActive(false);
+            ToggleRooms(false);
             ceiling_view.SetActive(true);
+            GameManager.instance._cameraCurr = GameManager.instance._ceilingCamBelow;
         }
         else
         {
-            room.SetActive(true);
+            ToggleRooms(true);
             ceiling_view.SetActive(false);
+            GameManager.instance._cameraCurr = GameManager.instance._roomCam;
         }
         i = !i;
+    }
+
+    private void ToggleRooms(bool isEnabled)
+    {
+        for (int i = 0; i < rooms.Count; i++)
+        {
+            rooms[i].SetActive(isEnabled);
+            rooms[i].transform.parent?.GetComponent<RoomReferences>()?._camera?.SetActive(!isEnabled);
+        }
     }
 
 }

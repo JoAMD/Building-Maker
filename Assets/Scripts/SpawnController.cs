@@ -2,26 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using TMPro;
 
 public class SpawnController : MonoBehaviour
 {
 
     public GameObject prop_prefab;
     private Vector3 sc;
-    private Transform prop_clone;
+    protected Transform prop_clone;
     public Transform ceiling;
     public float distanceFromWall;
+    public GameObject errorText;
+    protected float onDragYCoord = 5.3f;
 
-    // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-
+        
     }
 
     private void GetInput()
@@ -32,7 +33,7 @@ public class SpawnController : MonoBehaviour
         }
     }
 
-    public void SpawnProp()
+    protected virtual void SpawnProp()
     {
 
         prop_clone = Instantiate(prop_prefab).transform;
@@ -48,7 +49,7 @@ public class SpawnController : MonoBehaviour
         prop_clone.parent = ceiling;
     }
 
-    private void OnMouseDown()
+    protected void OnMouseDown()
     {
         SpawnProp();
     }
@@ -57,42 +58,69 @@ public class SpawnController : MonoBehaviour
     {
         //light_clone.transform.position = 
         // -------------- FOR ANDROID --------------
-        /*
-        if (Input.touchCount > 0)
-        {
-            sc = Camera.main.ScreenToWorldPoint(Input.touches[0].position);
-            sc.z = 0;
-            light_clone.transform.position = sc;
-        }
-        */
+        //if (Input.touchCount > 0)
+        //{
+        //    sc = Camera.main.ScreenToWorldPoint(Input.touches[0].position);
+        //    sc.y = ceiling.position.y + 5.3f;
+
+        //    sc.x = Mathf.RoundToInt(sc.x);
+        //    sc.z = Mathf.RoundToInt(sc.z);
+
+        //    //Debug.Log(sc);
+        //    prop_clone.position = sc;
+        //}
         // -------------- FOR EDITOR --------------
         GetInput();
 
-        sc = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        sc.y = ceiling.position.y + 5.3f;
+        sc = GameManager.instance._cameraCurr.ScreenToWorldPoint(Input.mousePosition);
+        sc.y = ceiling.position.y + onDragYCoord;
 
         sc.x = Mathf.RoundToInt(sc.x);
         sc.z = Mathf.RoundToInt(sc.z);
 
         //Debug.Log(sc);
         prop_clone.position = sc;
-        
+
     }
 
-    private void OnMouseUp()
+    protected virtual void OnMouseUp()
     {
         Debug.Log(prop_clone.localPosition.x + " and " + (ceiling.GetChild(0).localScale.x / 2 - distanceFromWall));
         Debug.Log(prop_clone.localPosition.z + " and " + (ceiling.GetChild(0).localScale.z / 2 - distanceFromWall));
         if( Mathf.Abs(prop_clone.localPosition.x) > Mathf.Abs(ceiling.GetChild(0).localScale.x / 2 - distanceFromWall) ||
             Mathf.Abs(prop_clone.localPosition.z) > Mathf.Abs(ceiling.GetChild(0).localScale.z / 2 - distanceFromWall))
         {
+            //Instead give an error sign plox
+            errorText.SetActive(true);
+            StartCoroutine(RemoveErrortext());
+
             Destroy(prop_clone.gameObject); //use polling system later if needed
         }
         else
         {
             GameManager.instance.ctr++;
-            prop_clone.localPosition = new Vector3(prop_clone.localPosition.x, 5.3f, prop_clone.localPosition.z);
+            prop_clone.localPosition = new Vector3(prop_clone.localPosition.x, onDragYCoord, prop_clone.localPosition.z);
         }
+    }
+
+    protected IEnumerator RemoveErrortext()
+    {
+        yield return new WaitForSeconds(2);
+        Debug.Log("YO WTF PLACE IT WELL BIATCH!");
+        //float t = 0;
+        //TextMeshProUGUI text = errorText.GetComponent<TextMeshProUGUI>();
+        //Color startColor = text.color;
+        //Color endColor = startColor;
+        //endColor.a = 0;
+
+        //while (t < 1)
+        //{
+        //    text.color -= new Color(startColor.r, startColor.g, startColor.b, Mathf.Lerp(startColor.a, endColor.a, t));
+        //    t += Time.deltaTime / 1000;
+        //    yield return new WaitForSeconds(0.05f);
+        //}
+        errorText.SetActive(false);
+        //text.color = startColor;
     }
 
 }
