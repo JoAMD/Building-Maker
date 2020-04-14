@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     private int layoutFileCount = 0;
 
+    public GameObject lightBtn, fanBtn;
+
     void Awake()
     {
         if(instance == null)
@@ -91,7 +93,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SaveLevelData()
+    public void SaveLayoutData()
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/level" + layoutFileCount + ".layoutdata";
@@ -112,7 +114,7 @@ public class GameManager : MonoBehaviour
         stream.Close();
     }
 
-    public LayoutData LoadLevelData(int layoutFileCount)
+    public LayoutData LoadLayoutData(int layoutFileCount)
     {
         string path = Application.persistentDataPath + "/level" + layoutFileCount + ".layoutdata";
         if (File.Exists(path))

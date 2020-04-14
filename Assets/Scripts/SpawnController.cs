@@ -55,12 +55,12 @@ public class SpawnController : MonoBehaviour
         prop_clone.parent = ceiling;
     }
 
-    protected void OnMouseDown()
+    public void OnMouseDown()
     {
         SpawnProp();
     }
 
-    private void OnMouseDrag()
+    public void OnMouseDrag()
     {
         //light_clone.transform.position = 
         // -------------- FOR ANDROID --------------
@@ -89,7 +89,7 @@ public class SpawnController : MonoBehaviour
 
     }
 
-    protected virtual void OnMouseUp()
+    public virtual void OnMouseUp()
     {
         Debug.Log(prop_clone.localPosition.x + " and " + (ceiling.GetChild(0).localScale.x / 2 - distanceFromWall));
         Debug.Log(prop_clone.localPosition.z + " and " + (ceiling.GetChild(0).localScale.z / 2 - distanceFromWall));

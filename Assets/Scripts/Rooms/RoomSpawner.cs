@@ -25,7 +25,7 @@ public class RoomSpawner : SpawnController
         //GameManager.instance._cameraControllerRoom._roomToZoomCentre = prop_clone.GetChild(2);
     }
 
-    protected override void OnMouseUp()
+    public override void OnMouseUp()
     {
         Debug.Log(prop_clone.localPosition.x + " and " + (ceiling.GetChild(0).localScale.x / 2 - distanceFromWall));
         Debug.Log(prop_clone.localPosition.z + " and " + (ceiling.GetChild(0).localScale.z / 2 - distanceFromWall));

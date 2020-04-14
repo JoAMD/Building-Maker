@@ -22,6 +22,12 @@ public class RoomReferences : MonoBehaviour
 {
     public List<Transform> props;
     public GameObject _camera;
+    public Transform thisRoomCeiling;
+
+    private void Start()
+    {
+        props = new List<Transform>();
+    }
 }
 
 

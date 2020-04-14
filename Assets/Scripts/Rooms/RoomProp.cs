@@ -9,11 +9,14 @@ public class RoomProp : Prop
     public Transform _roomToZoomCentre; // find
     [SerializeField] private Vector3 _camZoomedOutPos;
     [SerializeField] private float _camZoomedOrthographicSize;
+    public RoomReferences thisRoomRefs;
+    private BoxCollider boxCollider;
 
     protected override void Start()
     {
         base.Start();
         onDragYCoord = GameManager.instance.onDragYCoordSetting;
+        boxCollider = GetComponent<BoxCollider>();
     }
 
     private void OnMouseDown()
@@ -44,6 +47,7 @@ public class RoomProp : Prop
         if (Input.GetKeyDown(KeyCode.F))
         {
             FocusCameraOnGameObject(true);
+            Debug.Log("Added listen to " + GameManager.instance._zoomBtn.name);
             GameManager.instance._zoomBtn.onClick.AddListener(() => FocusCameraOnGameObject(false));
         }
     }
@@ -63,6 +67,16 @@ public class RoomProp : Prop
         float orthographicSize;
         if (isZoomingIn)
         {
+            boxCollider.enabled = false;
+            GameManager.instance.lightBtn.SetActive(true);
+            GameManager.instance.fanBtn.SetActive(true);
+            GameManager.instance.lightBtn.GetComponent<SpawnController>()._currentRoomRefs 
+                = GameManager.instance.fanBtn.GetComponent<SpawnController>()._currentRoomRefs
+                = thisRoomRefs;
+            GameManager.instance.lightBtn.GetComponent<SpawnController>().ceiling 
+                = GameManager.instance.fanBtn.GetComponent<SpawnController>().ceiling
+                = thisRoomRefs.thisRoomCeiling;
+
             _camZoomedOutPos = GameManager.instance._cameraCurr.transform.position;
             _camZoomedOrthographicSize = GameManager.instance._cameraCurr.orthographicSize;
             pos = _roomToZoomCentre.position;
@@ -71,6 +85,16 @@ public class RoomProp : Prop
         }
         else
         {
+            boxCollider.enabled = true;
+            GameManager.instance.lightBtn.SetActive(false);
+            GameManager.instance.fanBtn.SetActive(false);
+            GameManager.instance.lightBtn.GetComponent<SpawnController>()._currentRoomRefs
+                = GameManager.instance.fanBtn.GetComponent<SpawnController>()._currentRoomRefs
+                = thisRoomRefs;
+            GameManager.instance.lightBtn.GetComponent<SpawnController>().ceiling
+                = GameManager.instance.fanBtn.GetComponent<SpawnController>().ceiling
+                = thisRoomRefs.thisRoomCeiling;
+
             pos = _camZoomedOutPos;
             orthographicSize = _camZoomedOrthographicSize;
         }

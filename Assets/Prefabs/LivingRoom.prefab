@@ -756,7 +756,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 151bfde9b6ec0e5469cf05cff8f0d3d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  props: []
   _camera: {fileID: 600494885249651303}
+  thisRoomCeiling: {fileID: 2527312103628300121}
 --- !u!1 &600494885536854451
 GameObject:
   m_ObjectHideFlags: 0
@@ -1463,7 +1465,11 @@ MonoBehaviour:
   isDraggingAfterDelay: 0
   onDragYCoord: 1.32
   _roomSizeForCamZoom: {x: 5, y: 5, z: 5}
+  _roomSizeOrthographic: 5
   _roomToZoomCentre: {fileID: 3526130976820768404}
+  _camZoomedOutPos: {x: 0, y: 0, z: 0}
+  _camZoomedOrthographicSize: 0
+  thisRoomRefs: {fileID: 4582141525928721414}
 --- !u!1 &2527312103345266670
 GameObject:
   m_ObjectHideFlags: 0
@@ -2720,7 +2726,7 @@ PrefabInstance:
     - target: {fileID: 7645690582628414838, guid: c0d6616c7c1259246b4ffeddd88670d7,
         type: 3}
       propertyPath: m_Size.z
-      value: 8
+      value: 5.65
       objectReference: {fileID: 0}
     - target: {fileID: 7645690582628414838, guid: c0d6616c7c1259246b4ffeddd88670d7,
         type: 3}
@@ -2735,12 +2741,12 @@ PrefabInstance:
     - target: {fileID: 7645690582628414838, guid: c0d6616c7c1259246b4ffeddd88670d7,
         type: 3}
       propertyPath: m_Center.z
-      value: 0
+      value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: 7645690582628414838, guid: c0d6616c7c1259246b4ffeddd88670d7,
         type: 3}
       propertyPath: m_Size.x
-      value: 9
+      value: 5.73
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0d6616c7c1259246b4ffeddd88670d7, type: 3}

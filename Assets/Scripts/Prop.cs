@@ -27,7 +27,7 @@ public class Prop : MonoBehaviour
     protected virtual void OnMouseDrag()
     {
         isDragging = true;
-        Debug.Log("dragging " + prop.parent.name);
+        //Debug.Log("dragging " + prop.parent.name);
         //StartCoroutine(MovePropCo);
         GameManager.instance.prop_being_held = this;
         MoveProp();
@@ -38,6 +38,7 @@ public class Prop : MonoBehaviour
         isDragging = false;
         isDraggingAfterDelay = false;
         GameManager.instance.prop_being_held = null;
+        //prop.position = new Vector3(prop.position.x, GameManager.instance.ceiling.position.y + onDragYCoord, prop.position.y);
         //    if(MovePropCo != null)
         //    {
         //        StopCoroutine(MovePropCo);
