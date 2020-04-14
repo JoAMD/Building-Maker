@@ -14,6 +14,8 @@ public class SpawnController : MonoBehaviour
     public float distanceFromWall;
     public GameObject errorText;
     protected float onDragYCoord = 5.3f;
+    public RoomReferences _currentRoomRefs;
+    public bool isFan;
 
     protected virtual void Start()
     {
@@ -37,6 +39,10 @@ public class SpawnController : MonoBehaviour
     {
 
         prop_clone = Instantiate(prop_prefab).transform;
+
+        //_currentRoomRefs.propDetails.Add(new PropData(Vector3.zero, isFan, false)); // except arg 2 the rest are inaccurate and have to updated
+        _currentRoomRefs.props.Add(prop_clone);
+
         prop_clone.name = "sw" + GameManager.instance.ctr;
 
         Plugin.instance.jc.Call("subscribeNewSwitch");

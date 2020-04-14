@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class RoomSpawner : SpawnController
 {
-    public float onDragYCoordSetting = -5.3f;
     public GameObject roomZoomBtn;
 
     protected override void Start()
     {
         base.Start();
-        onDragYCoord = onDragYCoordSetting;
+        onDragYCoord = GameManager.instance.onDragYCoordSetting;
     }
 
     protected override void SpawnProp()
@@ -21,6 +20,9 @@ public class RoomSpawner : SpawnController
         Debug.Log("currRoomCtr = " + GameManager.instance.currRoomCtr);
 
         prop_clone.parent = ceiling;
+
+        //GameManager.instance._cameraController._roomToZoomCentre = prop_clone.GetChild(2);
+        //GameManager.instance._cameraControllerRoom._roomToZoomCentre = prop_clone.GetChild(2);
     }
 
     protected override void OnMouseUp()
@@ -35,6 +37,8 @@ public class RoomSpawner : SpawnController
             StartCoroutine(RemoveErrortext());
 
             Destroy(prop_clone.gameObject); //use polling system later if needed
+            //GameManager.instance._cameraController._roomToZoomCentre = null;
+            //GameManager.instance._cameraControllerRoom._roomToZoomCentre = null;
         }
         else
         {

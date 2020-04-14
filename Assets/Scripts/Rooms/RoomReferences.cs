@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class PropData
 {
     public Vector3 pos;
@@ -19,6 +20,8 @@ public class PropData
 
 public class RoomReferences : MonoBehaviour
 {
-    public List<PropData> propDetails;
+    public List<Transform> props;
     public GameObject _camera;
 }
+
+

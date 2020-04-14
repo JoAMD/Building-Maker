@@ -38,17 +38,17 @@ public class Prop : MonoBehaviour
         isDragging = false;
         isDraggingAfterDelay = false;
         GameManager.instance.prop_being_held = null;
-        if(MovePropCo != null)
-        {
-            StopCoroutine(MovePropCo);
-        }
-        MovePropCo = MovePropAfterDelay();
+        //    if(MovePropCo != null)
+        //    {
+        //        StopCoroutine(MovePropCo);
+        //    }
+        //    MovePropCo = MovePropAfterDelay();
+        //}
+
+        //protected virtual IEnumerator TogglePropAfterDelay()
+        //{
+
     }
-
-    //protected virtual IEnumerator TogglePropAfterDelay()
-    //{
-
-    //}
 
     private IEnumerator MovePropAfterDelay()
     {
