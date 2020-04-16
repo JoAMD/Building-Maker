@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 881118547913046592}
   m_Layer: 0
   m_Name: Fan
-  m_TagString: Untagged
+  m_TagString: Fan
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -696,6 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58c5a30133caddb41977024f3aca87ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDragYCoord: 5
   rotatable_part: {fileID: 881118547913046592}
   isTap: 0
 --- !u!1 &5259126245979461339

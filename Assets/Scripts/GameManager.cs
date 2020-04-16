@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 public class GameManager : MonoBehaviour
 {
@@ -33,9 +31,9 @@ public class GameManager : MonoBehaviour
 
     public GameObject errorText;
 
-    private int layoutFileCount = 0;
-
     public GameObject lightBtn, fanBtn;
+
+    public List<RoomReferences> roomsRefs;
 
     void Awake()
     {
@@ -52,6 +50,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        roomsRefs = new List<RoomReferences>();
         Plugin.instance.runner();
 
         states = new List<bool>();
@@ -93,51 +92,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SaveLayoutData()
-    {
-        BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/level" + layoutFileCount + ".layoutdata";
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-        }
-        FileStream stream = new FileStream(path, FileMode.Create);
-
-        LayoutData layoutData = new LayoutData();
-
-        formatter.Serialize(stream, layoutData);
-
-        layoutFileCount++;
-
-        Debug.Log("Saved at " + path);
-
-        stream.Close();
-    }
-
-    public LayoutData LoadLayoutData(int layoutFileCount)
-    {
-        string path = Application.persistentDataPath + "/level" + layoutFileCount + ".layoutdata";
-        if (File.Exists(path))
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(path, FileMode.Open);
-
-            LayoutData layoutData = formatter.Deserialize(stream) as LayoutData;
-            stream.Close();
-
-            return layoutData;
-        }
-        else
-        {
-            Debug.LogError("Save File not located at " + path);
-            errorText.SetActive(true);
-            return null;
-        }
-    }
-
     private IEnumerator RemoveErrortext()
     {
         yield return new WaitForSeconds(2);
         errorText.SetActive(false);
     }
+
+    public void DisableAllRoomBoxColliders(bool isEnabled)
+    {
+        for (int i = 0; i < roomsRefs.Count; i++)
+        {
+            roomsRefs[i].boxCollider.enabled = isEnabled;
+        }
+    }
+
 }

@@ -40,9 +40,6 @@ public class SpawnController : MonoBehaviour
 
         prop_clone = Instantiate(prop_prefab).transform;
 
-        //_currentRoomRefs.propDetails.Add(new PropData(Vector3.zero, isFan, false)); // except arg 2 the rest are inaccurate and have to updated
-        _currentRoomRefs.props.Add(prop_clone);
-
         prop_clone.name = "sw" + GameManager.instance.ctr;
 
         Plugin.instance.jc.Call("subscribeNewSwitch");
@@ -53,6 +50,8 @@ public class SpawnController : MonoBehaviour
             Debug.Log("states[ctr] = " + GameManager.instance.states[GameManager.instance.ctr]);
 
         prop_clone.parent = ceiling;
+
+        GameManager.instance.prop_being_held = prop_clone.GetChild(1).GetComponent<Prop>();
     }
 
     public void OnMouseDown()
@@ -104,9 +103,12 @@ public class SpawnController : MonoBehaviour
         }
         else
         {
+            //_currentRoomRefs.propDetails.Add(new PropData(Vector3.zero, isFan, false)); // except arg 2 the rest are inaccurate and have to updated
+            _currentRoomRefs.props.Add(prop_clone);
             GameManager.instance.ctr++;
             prop_clone.localPosition = new Vector3(prop_clone.localPosition.x, onDragYCoord, prop_clone.localPosition.z);
         }
+        GameManager.instance.prop_being_held = null;
     }
 
     protected IEnumerator RemoveErrortext()

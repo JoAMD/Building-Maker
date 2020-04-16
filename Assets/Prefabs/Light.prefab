@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91408350335d44f49a23cfeb6a3339ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDragYCoord: 5
   tex1: {fileID: 2800000, guid: 42d78b1cada0478429a5a9232944abf9, type: 3}
   tex0: {fileID: 2800000, guid: e3109c0325fdf864585b4f98f71c18cf, type: 3}
   i: 1
@@ -28,7 +29,7 @@ GameObject:
   - component: {fileID: 3364770827969860918}
   m_Layer: 0
   m_Name: Light
-  m_TagString: Untagged
+  m_TagString: Light
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295

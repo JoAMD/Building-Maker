@@ -6,17 +6,19 @@ public class Prop : MonoBehaviour
 {
     protected Transform prop;
     private Vector3 sc;
-    [SerializeField] private bool isDragging = false;
-    [SerializeField] protected bool isDraggingAfterDelay = false;
-    private IEnumerator MovePropCo;
-    protected bool isMouseDown = false;
+    //[SerializeField] private bool isDragging = false;
+    //[SerializeField] protected bool isDraggingAfterDelay = false;
+    //private IEnumerator MovePropCo;
     public float onDragYCoord = 5.3f;
+    protected bool isMouseDragStart = true;
+    private float mouseDragStartTime;
+    protected float waitTimeForDrag = 0.12f;
 
     protected virtual void Start()
     {
         Debug.Log("!!!!!!!!!!!!!!!!!");
         prop = transform.parent;
-        MovePropCo = MovePropAfterDelay();
+        //MovePropCo = MovePropAfterDelay();
     }
 
     public void RotateProp()
@@ -26,18 +28,27 @@ public class Prop : MonoBehaviour
 
     protected virtual void OnMouseDrag()
     {
-        isDragging = true;
+        //isDragging = true;
         //Debug.Log("dragging " + prop.parent.name);
         //StartCoroutine(MovePropCo);
-        GameManager.instance.prop_being_held = this;
-        MoveProp();
+        if (isMouseDragStart)
+        {
+            mouseDragStartTime = Time.time;
+            isMouseDragStart = false;
+        }
+        if(Time.time > mouseDragStartTime + waitTimeForDrag)
+        {
+            GameManager.instance.prop_being_held = this;
+            MoveProp();
+        }
     }
 
     protected virtual void OnMouseUp()
     {
-        isDragging = false;
-        isDraggingAfterDelay = false;
+        //isDragging = false;
+        //isDraggingAfterDelay = false;
         GameManager.instance.prop_being_held = null;
+        isMouseDragStart = true;
         //prop.position = new Vector3(prop.position.x, GameManager.instance.ceiling.position.y + onDragYCoord, prop.position.y);
         //    if(MovePropCo != null)
         //    {
@@ -55,12 +66,12 @@ public class Prop : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         Debug.Log("@@@@@@");
-        if (isDragging)
-        {
-            isDraggingAfterDelay = true;
-            GameManager.instance.prop_being_held = this;
-        }
-        while(isDraggingAfterDelay)
+        //if (isDragging)
+        //{
+        //    isDraggingAfterDelay = true;
+        //    GameManager.instance.prop_being_held = this;
+        //}
+        //while(isDraggingAfterDelay)
         {
             Debug.Log("######");
             MoveProp();

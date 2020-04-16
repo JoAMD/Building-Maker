@@ -21,6 +21,8 @@ public class RoomSpawner : SpawnController
 
         prop_clone.parent = ceiling;
 
+        GameManager.instance.prop_being_held = prop_clone.GetChild(1).GetComponent<Prop>();
+
         //GameManager.instance._cameraController._roomToZoomCentre = prop_clone.GetChild(2);
         //GameManager.instance._cameraControllerRoom._roomToZoomCentre = prop_clone.GetChild(2);
     }
@@ -46,6 +48,7 @@ public class RoomSpawner : SpawnController
             GameManager.instance.switchViewScript.rooms.Add(prop_clone.GetChild(0).gameObject);
             prop_clone.localPosition = new Vector3(prop_clone.localPosition.x, onDragYCoord, prop_clone.localPosition.z);
         }
+        GameManager.instance.prop_being_held = null;
     }
 
     public void RoomZoom()

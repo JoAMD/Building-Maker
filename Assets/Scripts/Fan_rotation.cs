@@ -8,13 +8,20 @@ public class Fan_rotation : Prop
     float spinSpeed = 400.0f;
     public bool isTap = false;
 
-    void OnMouseDown()
+    protected void OnMouseDown()
     {
-        MouseDownHelper();
+        StartCoroutine(MouseDownHelper());
     }
 
-    public void MouseDownHelper()
+    public IEnumerator MouseDownHelper()
     {
+        yield return new WaitForSeconds(waitTimeForDrag);
+        yield return new WaitForEndOfFrame();
+        if (!isMouseDragStart)
+        {
+            yield break;
+        }
+        
         isTap = !isTap;
         // else { transform.Rotate(0, 0, 0); }
         Plugin.instance.jc.Call("publish", gameObject.name[2]);

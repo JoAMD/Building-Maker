@@ -27,14 +27,20 @@ public class Light_Switching : Prop
         SwitchLights();
     }
 
-    private void OnMouseDown()
+    protected void OnMouseDown()
     {
-        isMouseDown = true;
-        SwitchLights();
+        StartCoroutine(SwitchLights());
     }
 
-    public void SwitchLights()
+    public IEnumerator SwitchLights()
     {
+        yield return new WaitForSeconds(waitTimeForDrag);
+        yield return new WaitForEndOfFrame();
+        if (!isMouseDragStart)
+        {
+            yield break;
+        }
+        
         if (i)
         {
             meshRenderer.sharedMaterial.mainTexture = tex1;

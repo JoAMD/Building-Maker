@@ -10,13 +10,12 @@ public class RoomProp : Prop
     [SerializeField] private Vector3 _camZoomedOutPos;
     [SerializeField] private float _camZoomedOrthographicSize;
     public RoomReferences thisRoomRefs;
-    private BoxCollider boxCollider;
 
     protected override void Start()
     {
         base.Start();
         onDragYCoord = GameManager.instance.onDragYCoordSetting;
-        boxCollider = GetComponent<BoxCollider>();
+        GameManager.instance.roomsRefs.Add(thisRoomRefs);
     }
 
     private void OnMouseDown()
@@ -47,27 +46,30 @@ public class RoomProp : Prop
         if (Input.GetKeyDown(KeyCode.F))
         {
             FocusCameraOnGameObject(true);
-            Debug.Log("Added listen to " + GameManager.instance._zoomBtn.name);
+            Debug.Log("Added listener to " + GameManager.instance._zoomBtn.name);
             GameManager.instance._zoomBtn.onClick.AddListener(() => FocusCameraOnGameObject(false));
+            //return; //instead use a bool to not run code in OnMouseDrag in base class and this class
         }
     }
 
     protected override void OnMouseUp()
     {
-        //base.OnMouseUp();
+        base.OnMouseUp();
 
         //GameManager.instance._zoomBtn.onClick.RemoveAllListeners();//RemoveListener(() => FocusCameraOnGameObject());
 
     }
 
-    void FocusCameraOnGameObject(bool isZoomingIn)
+    private void FocusCameraOnGameObject(bool isZoomingIn)
     {
         //for ceiling scene orthographic camera
         Vector3 pos;
         float orthographicSize;
         if (isZoomingIn)
         {
-            boxCollider.enabled = false;
+            GameManager.instance.DisableAllRoomBoxColliders(false);
+            GameManager.instance._zoomBtn.gameObject.SetActive(true);
+
             GameManager.instance.lightBtn.SetActive(true);
             GameManager.instance.fanBtn.SetActive(true);
             GameManager.instance.lightBtn.GetComponent<SpawnController>()._currentRoomRefs 
@@ -79,13 +81,18 @@ public class RoomProp : Prop
 
             _camZoomedOutPos = GameManager.instance._cameraCurr.transform.position;
             _camZoomedOrthographicSize = GameManager.instance._cameraCurr.orthographicSize;
+            Debug.Log(_camZoomedOrthographicSize + " = _camZoomedOrthographicSize");
+            Debug.Log(_camZoomedOutPos + " = _camZoomedOutPos");
             pos = _roomToZoomCentre.position;
             pos.y = GameManager.instance._cameraCurr.transform.position.y;
             orthographicSize = _roomSizeOrthographic;
         }
         else
         {
-            boxCollider.enabled = true;
+            GameManager.instance._zoomBtn.onClick.RemoveAllListeners();
+            GameManager.instance._zoomBtn.gameObject.SetActive(false);
+
+            GameManager.instance.DisableAllRoomBoxColliders(true);
             GameManager.instance.lightBtn.SetActive(false);
             GameManager.instance.fanBtn.SetActive(false);
             GameManager.instance.lightBtn.GetComponent<SpawnController>()._currentRoomRefs
@@ -102,7 +109,7 @@ public class RoomProp : Prop
         GameManager.instance._cameraCurr.orthographicSize = orthographicSize;
     }
 
-    void FocusCameraOnGameObjectRoomCam()
+    private void FocusCameraOnGameObjectRoomCam()
     {
         Vector3 max = _roomSizeForCamZoom;
         float radius = Mathf.Max(max.x, Mathf.Max(max.y, max.z));
