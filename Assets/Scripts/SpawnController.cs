@@ -9,7 +9,7 @@ public class SpawnController : MonoBehaviour
 
     public GameObject prop_prefab;
     private Vector3 sc;
-    protected Transform prop_clone;
+    public Transform prop_clone;
     public Transform ceiling;
     public float distanceFromWall;
     public GameObject errorText;
@@ -17,7 +17,7 @@ public class SpawnController : MonoBehaviour
     public RoomReferences _currentRoomRefs;
     public bool isFan;
 
-    protected virtual void Start()
+    public virtual void Start()
     {
         
     }
@@ -42,7 +42,7 @@ public class SpawnController : MonoBehaviour
 
         prop_clone.name = "sw" + GameManager.instance.ctr;
 
-        Plugin.instance.jc.Call("subscribeNewSwitch");
+        //Plugin.instance.jc.Call("subscribeNewSwitch");
 
         Debug.Log("ctr = " + GameManager.instance.ctr);
         Debug.Log("GameManager.instance.states.Count = " + GameManager.instance.states.Count);

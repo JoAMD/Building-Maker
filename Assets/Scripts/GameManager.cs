@@ -27,8 +27,6 @@ public class GameManager : MonoBehaviour
 
     public Button _zoomBtn;
 
-    public List<RoomReferences> _roomReferences;
-
     public GameObject errorText;
 
     public GameObject lightBtn, fanBtn;
@@ -45,18 +43,18 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
         roomsRefs = new List<RoomReferences>();
-        Plugin.instance.runner();
+        //Plugin.instance.runner();
 
         states = new List<bool>();
-        ArrayList ar = Plugin.instance.jc.Call<ArrayList>("getStateInit");
-
-        if(ar == null)
+        ArrayList ar;// = Plugin.instance.jc.Call<ArrayList>("getStateInit");
+        
+        //if(ar == null)
         {
             ar = new ArrayList();
             ar.Add("1");
@@ -81,7 +79,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < states.Count; i++)
             Debug.Log(states[i]);
 
-            Plugin.instance.jc.Call("unsubscribe");
+            //Plugin.instance.jc.Call("unsubscribe");
     }
 
     public void RotateProp()

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SwitchView : MonoBehaviour
 {
@@ -33,6 +34,11 @@ public class SwitchView : MonoBehaviour
             rooms[i].SetActive(isEnabled);
             rooms[i].transform.parent?.GetComponent<RoomReferences>()?._camera?.SetActive(!isEnabled);
         }
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 }

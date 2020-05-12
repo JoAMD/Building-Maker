@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Scenes/RoomAssembling.unity
     guid: a07fc0dca7e4e804192385c261456dc9
-  - enabled: 1
+  - enabled: 0
     path: Assets/Room/_Scenes/SampleScene.unity
     guid: cf39b47e85428ae49962abf5922bf922
+  - enabled: 1
+    path: Assets/Room/_Scenes/SampleScene 1.unity
+    guid: e46d4e608a04f794cb58cb2c805861e0
   m_configObjects: {}

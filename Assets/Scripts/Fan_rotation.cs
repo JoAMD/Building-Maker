@@ -8,7 +8,7 @@ public class Fan_rotation : Prop
     float spinSpeed = 400.0f;
     public bool isTap = false;
 
-    protected void OnMouseDown()
+    public void OnMouseDown()
     {
         StartCoroutine(MouseDownHelper());
     }
@@ -24,15 +24,26 @@ public class Fan_rotation : Prop
         
         isTap = !isTap;
         // else { transform.Rotate(0, 0, 0); }
-        Plugin.instance.jc.Call("publish", gameObject.name[2]);
+        //Plugin.instance.jc.Call("publish", gameObject.name[2]);
     }
 
-    protected override void Start()
+    public override void Start()
     {
         base.Start();
         if(GameManager.instance.states.Count > GameManager.instance.ctr)
-            isTap = !GameManager.instance.states[GameManager.instance.ctr];
+        {
+            Debug.Log("isEmulated = " + isEmulated);
+            if (isEmulated)
+            {
+                Debug.Log("Emulated so no need of getting from gm states");
+            }
+            else
+            {
+                isTap = !GameManager.instance.states[GameManager.instance.ctr];
+            }
+        }
         MouseDownHelper();
+        isDoneStart = true;
     }
 
     // Update is called once per frame

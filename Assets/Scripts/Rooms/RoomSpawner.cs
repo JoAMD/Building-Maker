@@ -6,7 +6,7 @@ public class RoomSpawner : SpawnController
 {
     public GameObject roomZoomBtn;
 
-    protected override void Start()
+    public override void Start()
     {
         base.Start();
         onDragYCoord = GameManager.instance.onDragYCoordSetting;

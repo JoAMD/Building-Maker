@@ -13,8 +13,10 @@ public class Prop : MonoBehaviour
     protected bool isMouseDragStart = true;
     private float mouseDragStartTime;
     protected float waitTimeForDrag = 0.12f;
+    public bool isEmulated;
+    public bool isDoneStart = false;
 
-    protected virtual void Start()
+    public virtual void Start()
     {
         Debug.Log("!!!!!!!!!!!!!!!!!");
         prop = transform.parent;
@@ -26,7 +28,7 @@ public class Prop : MonoBehaviour
         transform.parent.rotation = Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y + 90, transform.parent.eulerAngles.z);
     }
 
-    protected virtual void OnMouseDrag()
+    public virtual void OnMouseDrag()
     {
         //isDragging = true;
         //Debug.Log("dragging " + prop.parent.name);
@@ -38,12 +40,15 @@ public class Prop : MonoBehaviour
         }
         if(Time.time > mouseDragStartTime + waitTimeForDrag)
         {
-            GameManager.instance.prop_being_held = this;
-            MoveProp();
+            if (!isEmulated)
+            {
+                GameManager.instance.prop_being_held = this;
+                MoveProp();
+            }
         }
     }
 
-    protected virtual void OnMouseUp()
+    public virtual void OnMouseUp()
     {
         //isDragging = false;
         //isDraggingAfterDelay = false;
@@ -92,7 +97,7 @@ public class Prop : MonoBehaviour
         //light_clone.transform.position = 
         // -------------- FOR ANDROID --------------
 
-        //if (Input.touchCount > 0)
+        //if (Input.touchCount > 0) // no need
         //{
         //    sc = Camera.main.ScreenToWorldPoint(Input.touches[0].position);
         //    sc.y = GameManager.instance.ceiling.position.y + onDragYCoord;

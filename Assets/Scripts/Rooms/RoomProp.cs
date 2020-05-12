@@ -11,14 +11,15 @@ public class RoomProp : Prop
     [SerializeField] private float _camZoomedOrthographicSize;
     public RoomReferences thisRoomRefs;
 
-    protected override void Start()
+    public override void Start()
     {
         base.Start();
+        Debug.Log("Wertyu");
         onDragYCoord = GameManager.instance.onDragYCoordSetting;
         GameManager.instance.roomsRefs.Add(thisRoomRefs);
     }
 
-    private void OnMouseDown()
+    public void OnMouseDown()
     {
 
         //GameManager.instance._zoomBtn.onClick.AddListener(() => FocusCameraOnGameObject());
@@ -39,11 +40,11 @@ public class RoomProp : Prop
         //}
     }
 
-    protected override void OnMouseDrag()
+    public override void OnMouseDrag()
     {
         base.OnMouseDrag();
-        //if (Input.touches[0].tapCount > 2)
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.touches[0].tapCount > 2)
+            //if (Input.GetKeyDown(KeyCode.F))
         {
             FocusCameraOnGameObject(true);
             Debug.Log("Added listener to " + GameManager.instance._zoomBtn.name);
@@ -52,7 +53,7 @@ public class RoomProp : Prop
         }
     }
 
-    protected override void OnMouseUp()
+    public override void OnMouseUp()
     {
         base.OnMouseUp();
 
@@ -60,7 +61,7 @@ public class RoomProp : Prop
 
     }
 
-    private void FocusCameraOnGameObject(bool isZoomingIn)
+    public void FocusCameraOnGameObject(bool isZoomingIn)
     {
         //for ceiling scene orthographic camera
         Vector3 pos;

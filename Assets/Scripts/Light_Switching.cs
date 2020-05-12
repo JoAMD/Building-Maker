@@ -12,7 +12,7 @@ public class Light_Switching : Prop
     private MeshRenderer meshRenderer;
     private Transform parent;
 
-    protected override void Start()
+    public override void Start()
     {
         base.Start();
         //tex0 = transform.parent.GetComponent<MeshRenderer>().sharedMaterial.mainTexture;
@@ -23,11 +23,22 @@ public class Light_Switching : Prop
         meshRenderer.sharedMaterial = new_mat;
         
         if (GameManager.instance.states.Count > GameManager.instance.ctr)
-            i = GameManager.instance.states[GameManager.instance.ctr];
+        {
+            Debug.Log("isEmulated = " + isEmulated);
+            if (isEmulated)
+            {
+                Debug.Log("Emulated so no need of getting from gm states");
+            }
+            else
+            {
+                i = GameManager.instance.states[GameManager.instance.ctr];
+            }
+        }
         SwitchLights();
+        isDoneStart = true;
     }
 
-    protected void OnMouseDown()
+    public void OnMouseDown()
     {
         StartCoroutine(SwitchLights());
     }
@@ -51,7 +62,7 @@ public class Light_Switching : Prop
             meshRenderer.sharedMaterial.mainTexture = tex0;
             parent.GetChild(0).gameObject.SetActive(true);
         }
-        Plugin.instance.jc.Call("publish", gameObject.name[2]);
+        //Plugin.instance.jc.Call("publish", gameObject.name[2]);
         i = !i;
     }
 }
