@@ -10,6 +10,7 @@ public class SaveLoadManager : MonoBehaviour
 {
     private int layoutFileCount = 0;
     public GameObject savedText;
+    public GameObject errorText;
 
     [Header("Rooms")]
     public List<GameObject> rooms;
@@ -28,7 +29,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         List<RoomReferences> roomsRefs = GameManager.instance.roomsRefs;
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/blueprint" + inputFieldText.text[9] + ".layoutdata";  // + "/blueprint" + layoutFileCount + ".layoutdata";
+        string path = Application.persistentDataPath + "/" + inputFieldText.text + ".layoutdata";  // + "/blueprint" + layoutFileCount + ".layoutdata";
         Debug.Log("path = " + path);
         if (File.Exists(path))
         {
@@ -96,8 +97,15 @@ public class SaveLoadManager : MonoBehaviour
         Debug.Log("Saved at " + path);
 
         savedText.SetActive(true);
+        StartCoroutine(RemoveSavedOrErrorText(true));
 
         stream.Close();
+    }
+
+    private IEnumerator RemoveSavedOrErrorText(bool isSavedText)
+    {
+        yield return new WaitForSeconds(isSavedText ? 2 : 3);
+        (isSavedText ? savedText : errorText).SetActive(false);
     }
 
     public void LoadLayout()
@@ -107,7 +115,7 @@ public class SaveLoadManager : MonoBehaviour
 
     public IEnumerator LoadLayoutData(int layoutFileCount)
     {
-        string path = Application.persistentDataPath + "/blueprint" + ((inputFieldText.text.Length>9)?inputFieldText.text[9]:'\0') + ".layoutdata"; //" / blueprint" + layoutFileCount + ".layoutdata";
+        string path = Application.persistentDataPath + "/" + inputFieldText.text + ".layoutdata"; //" / blueprint" + layoutFileCount + ".layoutdata";
         if (File.Exists(path))
         {
             GameManager.instance.roomsRefs = new List<RoomReferences>();
@@ -126,6 +134,7 @@ public class SaveLoadManager : MonoBehaviour
                 currRoomPos = new Vector3(layoutData.roomsPos[i][0], layoutData.roomsPos[i][1], layoutData.roomsPos[i][2]);
                 currRoom = Instantiate(rooms[layoutData.roomType[i]], currRoomPos, Quaternion.identity);
                 currRoom.transform.SetParent(GameManager.instance.ceiling);
+                GameManager.instance.switchViewScript.rooms.Add(currRoom.transform.GetChild(0).gameObject);
 
                 //// ------------------ Start Emulating ------------------
                 //RoomProp roomPropCurr = currRoom.transform.GetChild(1).GetComponent<RoomProp>();
@@ -240,10 +249,13 @@ public class SaveLoadManager : MonoBehaviour
         else
         {
             Debug.LogError("Save File not located at " + path);
-            GameManager.instance.errorText.SetActive(true);
+            errorText.SetActive(true);
+            StartCoroutine(RemoveSavedOrErrorText(false));
             //layoutData = null;
             //return null;
         }
         yield return null;
     }
+
+
 }

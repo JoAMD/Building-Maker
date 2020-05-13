@@ -47,6 +47,9 @@ public class RoomSpawner : SpawnController
             GameManager.instance.currRoomCtr++;
             GameManager.instance.switchViewScript.rooms.Add(prop_clone.GetChild(0).gameObject);
             prop_clone.localPosition = new Vector3(prop_clone.localPosition.x, onDragYCoord, prop_clone.localPosition.z);
+            Debug.Log("Mouse up room spawner..");
+            GameManager.instance.roomsRefs.Add(prop_clone.GetComponent<RoomReferences>());
+            Debug.Log("Added to rooms refs list in gm for saving!");
         }
         GameManager.instance.prop_being_held = null;
     }

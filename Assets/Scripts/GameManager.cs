@@ -27,8 +27,6 @@ public class GameManager : MonoBehaviour
 
     public Button _zoomBtn;
 
-    public GameObject errorText;
-
     public GameObject lightBtn, fanBtn;
 
     public List<RoomReferences> roomsRefs;
@@ -88,12 +86,6 @@ public class GameManager : MonoBehaviour
         {
             prop_being_held.RotateProp();
         }
-    }
-
-    private IEnumerator RemoveErrortext()
-    {
-        yield return new WaitForSeconds(2);
-        errorText.SetActive(false);
     }
 
     public void DisableAllRoomBoxColliders(bool isEnabled)

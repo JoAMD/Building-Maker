@@ -16,7 +16,6 @@ public class RoomProp : Prop
         base.Start();
         Debug.Log("Wertyu");
         onDragYCoord = GameManager.instance.onDragYCoordSetting;
-        GameManager.instance.roomsRefs.Add(thisRoomRefs);
     }
 
     public void OnMouseDown()
@@ -38,13 +37,22 @@ public class RoomProp : Prop
         //FocusCameraOnGameObject();
         //    }
         //}
+
+        if (Application.platform == RuntimePlatform.Android && Input.touches[0].tapCount > 2)
+        {
+            FocusCameraOnGameObject(true);
+            Debug.Log("Added listener to " + GameManager.instance._zoomBtn.name);
+            GameManager.instance._zoomBtn.onClick.AddListener(() => FocusCameraOnGameObject(false));
+            //return; //instead use a bool to not run code in OnMouseDrag in base class and this class
+        }
     }
 
     public override void OnMouseDrag()
     {
         base.OnMouseDrag();
-        if (Input.touches[0].tapCount > 2)
-            //if (Input.GetKeyDown(KeyCode.F))
+        if (Application.platform == RuntimePlatform.Android && Input.touches[0].tapCount > 2
+            || Application.platform == RuntimePlatform.WindowsEditor && Input.GetKeyDown(KeyCode.F)
+            || Application.platform == RuntimePlatform.WindowsPlayer && Input.GetKeyDown(KeyCode.F))
         {
             FocusCameraOnGameObject(true);
             Debug.Log("Added listener to " + GameManager.instance._zoomBtn.name);
