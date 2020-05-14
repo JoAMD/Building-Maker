@@ -22,6 +22,8 @@ public class RoomSpawner : SpawnController
         prop_clone.parent = ceiling;
 
         GameManager.instance.prop_being_held = prop_clone.GetChild(1).GetComponent<Prop>();
+        GameManager.instance.prop_being_held.ceiling = ceiling;
+        GameManager.instance.prop_being_held.distanceFromWall = distanceFromWall;
 
         //GameManager.instance._cameraController._roomToZoomCentre = prop_clone.GetChild(2);
         //GameManager.instance._cameraControllerRoom._roomToZoomCentre = prop_clone.GetChild(2);

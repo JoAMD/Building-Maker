@@ -50,9 +50,11 @@ public class RoomProp : Prop
     public override void OnMouseDrag()
     {
         base.OnMouseDrag();
-        if (Application.platform == RuntimePlatform.Android && Input.touches[0].tapCount > 2
-            || Application.platform == RuntimePlatform.WindowsEditor && Input.GetKeyDown(KeyCode.F)
-            || Application.platform == RuntimePlatform.WindowsPlayer && Input.GetKeyDown(KeyCode.F))
+        //Debug.Log("Application.platform == RuntimePlatform.WindowsEditor" + (Application.platform == RuntimePlatform.WindowsEditor));
+        //Debug.Log("Application.platform = " + Application.platform);
+        if ((Application.platform == RuntimePlatform.Android && Input.touches[0].tapCount > 2)
+            || (Application.platform == RuntimePlatform.WindowsEditor && Input.GetKeyDown(KeyCode.F))
+            || (Application.platform == RuntimePlatform.WindowsPlayer && Input.GetKeyDown(KeyCode.F)))
         {
             FocusCameraOnGameObject(true);
             Debug.Log("Added listener to " + GameManager.instance._zoomBtn.name);
@@ -72,6 +74,7 @@ public class RoomProp : Prop
     public void FocusCameraOnGameObject(bool isZoomingIn)
     {
         //for ceiling scene orthographic camera
+        Debug.Log("Running FocusCameraOnGameObject fn with parameter isZoomingIn = " + isZoomingIn);
         Vector3 pos;
         float orthographicSize;
         if (isZoomingIn)

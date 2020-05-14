@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -8,6 +9,8 @@ using System.Collections;
 
 public class SaveLoadManager : MonoBehaviour
 {
+    public static SaveLoadManager instance;
+
     private int layoutFileCount = 0;
     public GameObject savedText;
     public GameObject errorText;
@@ -20,10 +23,36 @@ public class SaveLoadManager : MonoBehaviour
 
     public GameObject fileExists;
     public Button saveBtnMain;
+    public Button loadBtnMain;
 
     public SpawnController lightSpawner;
     public SpawnController fanSpawner;
     public RoomSpawner roomSpawner;
+
+    private SceneData sd;
+    private bool isSceneChangeDone = false;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            Debug.Log("instance = this");
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            //Debug.Log("instance != this so Destroy(gameObject)");
+            //Destroy(gameObject);
+        }
+        Debug.Log("DontDestroyOnLoad(gameObject)");
+        DontDestroyOnLoad(gameObject);
+        SceneManager.activeSceneChanged += OnChangeScene;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.activeSceneChanged -= OnChangeScene;
+    }
 
     public void SaveLayoutData(bool isDelete)
     {
@@ -36,12 +65,14 @@ public class SaveLoadManager : MonoBehaviour
             if (isDelete)
             {
                 saveBtnMain.interactable = true;
+                loadBtnMain.interactable = true;
                 File.Delete(path);
             }
             else
             {
                 Debug.Log("o");
                 saveBtnMain.interactable = false;
+                loadBtnMain.interactable = false;
                 fileExists.SetActive(true);
                 return;
             }
@@ -49,6 +80,7 @@ public class SaveLoadManager : MonoBehaviour
         else
         {
             saveBtnMain.interactable = true;
+            loadBtnMain.interactable = true;
         }
         Debug.Log("Path = " + path);
         FileStream stream = new FileStream(path, FileMode.Create);
@@ -113,9 +145,23 @@ public class SaveLoadManager : MonoBehaviour
         StartCoroutine(LoadLayoutData(layoutFileCount - 1));
     }
 
+    public void ReloadSceneAndLoad()
+    {
+        isSceneChangeDone = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        LoadLayout();
+    }
+
     public IEnumerator LoadLayoutData(int layoutFileCount)
     {
-        string path = Application.persistentDataPath + "/" + inputFieldText.text + ".layoutdata"; //" / blueprint" + layoutFileCount + ".layoutdata";
+        string inputFieldTxt = inputFieldText.text;
+
+        yield return new WaitUntil(() => isSceneChangeDone);
+
+        SceneData newSd = FindObjectOfType<SceneData>();
+        newSd.switchViewBtn.interactable = false;
+        isSceneChangeDone = false;
+        string path = Application.persistentDataPath + "/" + inputFieldTxt + ".layoutdata"; //" / blueprint" + layoutFileCount + ".layoutdata";
         if (File.Exists(path))
         {
             GameManager.instance.roomsRefs = new List<RoomReferences>();
@@ -238,7 +284,7 @@ public class SaveLoadManager : MonoBehaviour
                     prop.transform.SetParent(roomCeiling);
 
                 }
-                //GameManager.instance.roomsRefs.Add(currRoomRefs);
+                GameManager.instance.roomsRefs.Add(currRoomRefs);
 
             }
 
@@ -254,8 +300,34 @@ public class SaveLoadManager : MonoBehaviour
             //layoutData = null;
             //return null;
         }
+        newSd.switchViewBtn.interactable = true;
+        Destroy(gameObject);
         yield return null;
     }
 
-
+    private void OnChangeScene(Scene oldScene, Scene newScene)
+    {
+        if (SceneManager.GetActiveScene().Equals(newScene))
+        {
+            isSceneChangeDone = true;
+        }
+        Debug.Log("Scene Change");
+        //sd = FindObjectOfType<SceneData>();
+        //if(sd == null)
+        //{
+        //    Debug.LogError("Scene data not found");
+        //}
+        //else
+        //{
+        //    savedText = sd.savedText;
+        //    errorText = sd.errorText;
+        //    inputFieldText = sd.inputFieldText;
+        //    fileExists = sd.fileExists;
+        //    saveBtnMain = sd.saveBtnMain;
+        //    loadBtnMain = sd.loadBtnMain;
+        //    lightSpawner = sd.lightSpawner;
+        //    fanSpawner = sd.fanSpawner;
+        //    roomSpawner = sd.roomSpawner;
+        //}
+    }
 }

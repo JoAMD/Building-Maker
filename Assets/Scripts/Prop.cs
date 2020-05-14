@@ -16,6 +16,12 @@ public class Prop : MonoBehaviour
     public bool isEmulated;
     public bool isDoneStart = false;
 
+    [Header("Values received from Spawner Script in Btn")]
+    public Transform ceiling;
+    public float distanceFromWall;
+
+    private bool isContinueMouseDrag = true;
+
     public virtual void Start()
     {
         Debug.Log("!!!!!!!!!!!!!!!!!");
@@ -30,20 +36,23 @@ public class Prop : MonoBehaviour
 
     public virtual void OnMouseDrag()
     {
-        //isDragging = true;
-        //Debug.Log("dragging " + prop.parent.name);
-        //StartCoroutine(MovePropCo);
-        if (isMouseDragStart)
+        if (isContinueMouseDrag)
         {
-            mouseDragStartTime = Time.time;
-            isMouseDragStart = false;
-        }
-        if(Time.time > mouseDragStartTime + waitTimeForDrag)
-        {
-            if (!isEmulated)
+            //isDragging = true;
+            //Debug.Log("dragging " + prop.parent.name);
+            //StartCoroutine(MovePropCo);
+            if (isMouseDragStart)
             {
-                GameManager.instance.prop_being_held = this;
-                MoveProp();
+                mouseDragStartTime = Time.time;
+                isMouseDragStart = false;
+            }
+            if (Time.time > mouseDragStartTime + waitTimeForDrag)
+            {
+                if (!isEmulated)
+                {
+                    GameManager.instance.prop_being_held = this;
+                    MoveProp();
+                }
             }
         }
     }
@@ -54,6 +63,7 @@ public class Prop : MonoBehaviour
         //isDraggingAfterDelay = false;
         GameManager.instance.prop_being_held = null;
         isMouseDragStart = true;
+        isContinueMouseDrag = true;
         //prop.position = new Vector3(prop.position.x, GameManager.instance.ceiling.position.y + onDragYCoord, prop.position.y);
         //    if(MovePropCo != null)
         //    {
@@ -118,8 +128,35 @@ public class Prop : MonoBehaviour
         sc.x = Mathf.RoundToInt(sc.x);
         sc.z = Mathf.RoundToInt(sc.z);
 
-        //Debug.Log(sc);
-        prop.position = sc;
-        
+
+        Debug.Log(prop.localPosition.x + " and " + (ceiling.GetChild(0).localScale.x / 2 - distanceFromWall));
+        Debug.Log(prop.localPosition.z + " and " + (ceiling.GetChild(0).localScale.z / 2 - distanceFromWall));
+        bool a = Mathf.Abs(prop.localPosition.x) > Mathf.Abs(ceiling.GetChild(0).localScale.x / 2 - distanceFromWall);
+        bool b = Mathf.Abs(prop.localPosition.z) > Mathf.Abs(ceiling.GetChild(0).localScale.z / 2 - distanceFromWall);
+        if (a || b)
+        {
+            float x = (ceiling.GetChild(0).localScale.x / 2 - distanceFromWall) *.8f * Mathf.Sign(prop.position.x);
+            float z = (ceiling.GetChild(0).localScale.z / 2 - distanceFromWall) *.8f * Mathf.Sign(prop.position.z);
+            if (a)
+            {
+                Debug.Log("z ok");
+                z = prop.position.z;
+            }
+            if (b)
+            {
+                Debug.Log("x ok");
+                x = prop.position.x;
+            }
+            prop.position = new Vector3(x, prop.position.y, z);
+            isContinueMouseDrag = false;
+        }
+        else
+        {
+            //Debug.Log(sc);
+            prop.position = sc;
+        }
+
+        //check for outside ceiling condn like in spawner
+
     }
 }

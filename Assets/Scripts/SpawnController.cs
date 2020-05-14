@@ -52,6 +52,8 @@ public class SpawnController : MonoBehaviour
         prop_clone.parent = ceiling;
 
         GameManager.instance.prop_being_held = prop_clone.GetChild(1).GetComponent<Prop>();
+        GameManager.instance.prop_being_held.ceiling = ceiling;
+        GameManager.instance.prop_being_held.distanceFromWall = distanceFromWall;
     }
 
     public void OnMouseDown()
