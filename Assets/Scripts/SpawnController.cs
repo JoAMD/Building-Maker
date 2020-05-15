@@ -41,8 +41,15 @@ public class SpawnController : MonoBehaviour
         prop_clone = Instantiate(prop_prefab).transform;
 
         prop_clone.name = "sw" + GameManager.instance.ctr;
-
-        //Plugin.instance.jc.Call("subscribeNewSwitch");
+        Debug.Log(Plugin.instance.jc);
+        if (Plugin.instance.jc != null)
+        {
+            Plugin.instance.jc.Call("subscribeNewSwitch");
+        }
+        else
+        {
+            Debug.LogWarning("jc null!");
+        }
 
         Debug.Log("ctr = " + GameManager.instance.ctr);
         Debug.Log("GameManager.instance.states.Count = " + GameManager.instance.states.Count);

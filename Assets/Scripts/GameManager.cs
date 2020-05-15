@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     public GameObject lightBtn, fanBtn;
 
     public List<RoomReferences> roomsRefs;
+    public List<Button> roomSpawners;
 
     void Awake()
     {
@@ -39,7 +40,8 @@ public class GameManager : MonoBehaviour
         }
         else if(instance != this)
         {
-            Destroy(gameObject);
+            Destroy(instance.gameObject);
+            instance = this;
         }
         //DontDestroyOnLoad(gameObject);
     }
@@ -47,12 +49,18 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         roomsRefs = new List<RoomReferences>();
-        //Plugin.instance.runner();
+        Plugin.instance.runner();
 
         states = new List<bool>();
-        ArrayList ar;// = Plugin.instance.jc.Call<ArrayList>("getStateInit");
-        
-        //if(ar == null)
+        ArrayList ar = null;
+        if (Plugin.instance.jc != null)
+        {
+            ar = Plugin.instance.jc.Call<ArrayList>("getStateInit");
+        }
+        Debug.Log("jc = " + Plugin.instance.jc);
+        Debug.Log("ar = " + ar);
+
+        if(ar == null)
         {
             ar = new ArrayList();
             ar.Add("1");
@@ -77,7 +85,14 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < states.Count; i++)
             Debug.Log(states[i]);
 
-            //Plugin.instance.jc.Call("unsubscribe");
+        if (Plugin.instance.jc != null)
+        {
+            Plugin.instance.jc.Call("unsubscribe");
+        }
+        else
+        {
+            Debug.LogWarning("jc null!");
+        }
     }
 
     public void RotateProp()
@@ -93,6 +108,15 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < roomsRefs.Count; i++)
         {
             roomsRefs[i].boxCollider.enabled = isEnabled;
+        }
+    }
+
+    public void ToggleAllRoomSpawnerBtns(bool isInteractable)
+    {
+        for (int i = 0; i < roomSpawners.Count; i++)
+        {
+            //roomSpawners[i].interactable = isInteractable;
+            roomSpawners[i].gameObject.SetActive(isInteractable);
         }
     }
 

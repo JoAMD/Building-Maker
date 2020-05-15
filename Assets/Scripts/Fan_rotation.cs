@@ -24,7 +24,15 @@ public class Fan_rotation : Prop
         
         isTap = !isTap;
         // else { transform.Rotate(0, 0, 0); }
-        //Plugin.instance.jc.Call("publish", gameObject.name[2]);
+        if (Plugin.instance.jc != null)
+        {
+            Debug.Log("published");
+            Plugin.instance.jc.Call("publish", gameObject.name[2]);
+        }
+        else
+        {
+            Debug.LogWarning("jc null!");
+        }
     }
 
     public override void Start()

@@ -11,6 +11,8 @@ public class RoomProp : Prop
     [SerializeField] private float _camZoomedOrthographicSize;
     public RoomReferences thisRoomRefs;
 
+    private float focusStartTime = 0;
+
     public override void Start()
     {
         base.Start();
@@ -40,10 +42,14 @@ public class RoomProp : Prop
 
         if (Application.platform == RuntimePlatform.Android && Input.touches[0].tapCount > 2)
         {
-            FocusCameraOnGameObject(true);
-            Debug.Log("Added listener to " + GameManager.instance._zoomBtn.name);
-            GameManager.instance._zoomBtn.onClick.AddListener(() => FocusCameraOnGameObject(false));
-            //return; //instead use a bool to not run code in OnMouseDrag in base class and this class
+            if(Time.time - focusStartTime > 1f)
+            {
+                focusStartTime = Time.time;
+                FocusCameraOnGameObject(true);
+                Debug.Log("Added listener to " + GameManager.instance._zoomBtn.name);
+                GameManager.instance._zoomBtn.onClick.AddListener(() => FocusCameraOnGameObject(false));
+                //return; //instead use a bool to not run code in OnMouseDrag in base class and this class
+            }
         }
     }
 
@@ -56,15 +62,20 @@ public class RoomProp : Prop
             || (Application.platform == RuntimePlatform.WindowsEditor && Input.GetKeyDown(KeyCode.F))
             || (Application.platform == RuntimePlatform.WindowsPlayer && Input.GetKeyDown(KeyCode.F)))
         {
-            FocusCameraOnGameObject(true);
-            Debug.Log("Added listener to " + GameManager.instance._zoomBtn.name);
-            GameManager.instance._zoomBtn.onClick.AddListener(() => FocusCameraOnGameObject(false));
-            //return; //instead use a bool to not run code in OnMouseDrag in base class and this class
+            if (Time.time - focusStartTime > 1f)
+            {
+                focusStartTime = Time.time;
+                FocusCameraOnGameObject(true);
+                Debug.Log("Added listener to " + GameManager.instance._zoomBtn.name);
+                GameManager.instance._zoomBtn.onClick.AddListener(() => FocusCameraOnGameObject(false));
+                //return; //instead use a bool to not run code in OnMouseDrag in base class and this class
+            }
         }
     }
 
     public override void OnMouseUp()
     {
+        Debug.Log(_camZoomedOrthographicSize + " = _camZoomedOrthographicSize");
         base.OnMouseUp();
 
         //GameManager.instance._zoomBtn.onClick.RemoveAllListeners();//RemoveListener(() => FocusCameraOnGameObject());
@@ -77,6 +88,7 @@ public class RoomProp : Prop
         Debug.Log("Running FocusCameraOnGameObject fn with parameter isZoomingIn = " + isZoomingIn);
         Vector3 pos;
         float orthographicSize;
+        GameManager.instance.ToggleAllRoomSpawnerBtns(!isZoomingIn);
         if (isZoomingIn)
         {
             GameManager.instance.DisableAllRoomBoxColliders(false);
@@ -91,6 +103,7 @@ public class RoomProp : Prop
                 = GameManager.instance.fanBtn.GetComponent<SpawnController>().ceiling
                 = thisRoomRefs.thisRoomCeiling;
 
+            Debug.Log("currCam = " + GameManager.instance._cameraCurr.name);
             _camZoomedOutPos = GameManager.instance._cameraCurr.transform.position;
             _camZoomedOrthographicSize = GameManager.instance._cameraCurr.orthographicSize;
             Debug.Log(_camZoomedOrthographicSize + " = _camZoomedOrthographicSize");
@@ -115,6 +128,8 @@ public class RoomProp : Prop
                 = thisRoomRefs.thisRoomCeiling;
 
             pos = _camZoomedOutPos;
+            Debug.Log("currCam = " + GameManager.instance._cameraCurr.name);
+            Debug.Log(_camZoomedOrthographicSize + " = _camZoomedOrthographicSize");
             orthographicSize = _camZoomedOrthographicSize;
         }
         GameManager.instance._cameraCurr.transform.position = pos;

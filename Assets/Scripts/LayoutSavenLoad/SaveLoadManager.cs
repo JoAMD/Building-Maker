@@ -27,7 +27,6 @@ public class SaveLoadManager : MonoBehaviour
 
     public SpawnController lightSpawner;
     public SpawnController fanSpawner;
-    public RoomSpawner roomSpawner;
 
     private SceneData sd;
     private bool isSceneChangeDone = false;
@@ -136,8 +135,12 @@ public class SaveLoadManager : MonoBehaviour
 
     private IEnumerator RemoveSavedOrErrorText(bool isSavedText)
     {
+        GameObject gb = (isSavedText ? savedText : errorText);
         yield return new WaitForSeconds(isSavedText ? 2 : 3);
-        (isSavedText ? savedText : errorText).SetActive(false);
+        if (gb != null)
+        {
+            gb.SetActive(false);
+        }
     }
 
     public void LoadLayout()
@@ -182,6 +185,9 @@ public class SaveLoadManager : MonoBehaviour
                 currRoom.transform.SetParent(GameManager.instance.ceiling);
                 GameManager.instance.switchViewScript.rooms.Add(currRoom.transform.GetChild(0).gameObject);
 
+                Prop currProp = currRoom.transform.GetChild(1).GetComponent<Prop>();
+                currProp.ceiling = GameManager.instance.roomSpawners[0].GetComponent<RoomSpawner>().ceiling;
+                currProp.distanceFromWall = GameManager.instance.roomSpawners[0].GetComponent<RoomSpawner>().distanceFromWall;
                 //// ------------------ Start Emulating ------------------
                 //RoomProp roomPropCurr = currRoom.transform.GetChild(1).GetComponent<RoomProp>();
                 //roomSpawner.prop_clone = currRoom.transform;
@@ -222,11 +228,15 @@ public class SaveLoadManager : MonoBehaviour
                     //Debug.Log(layoutData.propDetails[i][j].)
                     currPropPos = new Vector3(layoutData.propDetails[i][j].pos[0], layoutData.propDetails[i][j].pos[1], layoutData.propDetails[i][j].pos[2]);
                     //currPropPos = layoutData.propDetails[i][j].pos;
-                    prop = Instantiate(layoutData.propDetails[i][j].isFan ? fan : light, currPropPos, Quaternion.identity);
+                    bool isFan = layoutData.propDetails[i][j].isFan;
+                    prop = Instantiate(isFan ? fan : light, currPropPos, Quaternion.identity);
                     yield return new WaitForSeconds(0.5f);
                     //yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.L));
                     currRoomRefs.props.Add(prop.transform);
                     Debug.Log("adding prop to room refs => " + prop.name + " " + currRoomRefs.gameObject.name);
+                    currProp = prop.transform.GetChild(1).GetComponent<Prop>();
+                    currProp.ceiling = (isFan ? GameManager.instance.fanBtn : GameManager.instance.lightBtn).GetComponent<SpawnController>().ceiling;
+                    currProp.distanceFromWall = (isFan ? GameManager.instance.fanBtn : GameManager.instance.lightBtn).GetComponent<SpawnController>().distanceFromWall;
                     //// ----------------------- Start Emulating -----------------------
                     //if (layoutData.propDetails[i][j].isFan)
                     //{
@@ -280,7 +290,7 @@ public class SaveLoadManager : MonoBehaviour
                     //}
 
                     //// ----------------------- Done Emulating -----------------------
-                    
+
                     prop.transform.SetParent(roomCeiling);
 
                 }

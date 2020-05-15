@@ -62,7 +62,15 @@ public class Light_Switching : Prop
             meshRenderer.sharedMaterial.mainTexture = tex0;
             parent.GetChild(0).gameObject.SetActive(true);
         }
-        //Plugin.instance.jc.Call("publish", gameObject.name[2]);
+
+        if (Plugin.instance.jc != null)
+        {
+            Plugin.instance.jc.Call("publish", gameObject.name[2]);
+        }
+        else
+        {
+            Debug.LogWarning("jc null!");
+        }
         i = !i;
     }
 }
