@@ -135,8 +135,9 @@ public class Prop : MonoBehaviour
         bool b = Mathf.Abs(prop.localPosition.z) > Mathf.Abs(ceiling.GetChild(0).localScale.z / 2 - distanceFromWall);
         if (a || b)
         {
-            float x = (ceiling.GetChild(0).localScale.x / 2 - distanceFromWall) *.8f * Mathf.Sign(prop.position.x);
-            float z = (ceiling.GetChild(0).localScale.z / 2 - distanceFromWall) *.8f * Mathf.Sign(prop.position.z);
+            float x = (ceiling.GetChild(0).localScale.x / 2 - distanceFromWall) *.8f * Mathf.Sign(prop.position.x) + ceiling.position.x;
+            float z = (ceiling.GetChild(0).localScale.z / 2 - distanceFromWall) *.8f * Mathf.Sign(prop.position.z) + ceiling.position.z;
+            Debug.Log("x = " + x);
             if (a)
             {
                 Debug.Log("z ok");
@@ -152,7 +153,7 @@ public class Prop : MonoBehaviour
         }
         else
         {
-            //Debug.Log(sc);
+            Debug.Log("sc = " + sc);
             prop.position = sc;
         }
 

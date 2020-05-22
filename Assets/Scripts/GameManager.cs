@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         roomsRefs = new List<RoomReferences>();
-        Plugin.instance.runner();
+        //Plugin.instance.runner();
 
         states = new List<bool>();
         ArrayList ar = null;
