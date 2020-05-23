@@ -6,14 +6,21 @@ using TMPro;
 
 public class SetIPScript : MonoBehaviour
 {
+    private string ip;
     private void Start()
     {
         Plugin.instance.runner();
     }
 
-    public void SetIPAndScene(TMP_InputField ip)
+    public void SetIP(TMP_InputField ip)
     {
-        Plugin.instance.jc.Call("GetIPAddress", ip.text);
+        this.ip = ip.text;
+    }
+    
+    public void LoadMainScene()
+    {
+        Plugin.instance.jc.Call("GetIPAddress", ip);
         SceneManager.LoadSceneAsync(1);
     }
+
 }
