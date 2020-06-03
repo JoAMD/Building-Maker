@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using TMPro;
+using System;
 
 public class SpawnController : MonoBehaviour
 {
@@ -41,15 +42,22 @@ public class SpawnController : MonoBehaviour
         prop_clone = Instantiate(prop_prefab).transform;
 
         prop_clone.name = "sw" + GameManager.instance.ctr;
-        Debug.Log(Plugin.instance.jc);
-        if (Plugin.instance.jc != null)
+        try
         {
+            Debug.Log(Plugin.instance.jc);
             Plugin.instance.jc.Call("subscribeNewSwitch");
         }
-        else
+        catch (Exception e)
         {
-            Debug.LogWarning("jc null!");
+            Debug.LogWarning("couldn't call subscribeNewSwitch! Error stack trace => " + e.StackTrace);
         }
+        //if (Plugin.instance.jc != null)
+        //{
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("jc null!");
+        //}
 
         Debug.Log("ctr = " + GameManager.instance.ctr);
         Debug.Log("GameManager.instance.states.Count = " + GameManager.instance.states.Count);
@@ -123,7 +131,7 @@ public class SpawnController : MonoBehaviour
     protected IEnumerator RemoveErrortext()
     {
         yield return new WaitForSeconds(2);
-        Debug.Log("YO WTF PLACE IT WELL BIATCH!");
+        Debug.Log("Place the lights/fans well, please");
         //float t = 0;
         //TextMeshProUGUI text = errorText.GetComponent<TextMeshProUGUI>();
         //Color startColor = text.color;

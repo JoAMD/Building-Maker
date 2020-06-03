@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,15 +25,27 @@ public class Fan_rotation : Prop
         
         isTap = !isTap;
         // else { transform.Rotate(0, 0, 0); }
-        if (Plugin.instance.jc != null)
+
+        try
         {
             Debug.Log("published");
             Plugin.instance.jc.Call("publish", gameObject.name[2]);
         }
-        else
+        catch (Exception e)
         {
-            Debug.LogWarning("jc null!");
+            Debug.LogWarning("couldn't call publish! Error stack trace => " + e.StackTrace);
         }
+
+
+        //if (Plugin.instance.jc != null)
+        //{
+        //    Debug.Log("published");
+        //    Plugin.instance.jc.Call("publish", gameObject.name[2]);
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("jc null!");
+        //}
     }
 
     public override void Start()

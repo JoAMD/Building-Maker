@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,18 +28,26 @@ public class Plugin : MonoBehaviour
 
     public void runner()
     {
-        jc = new AndroidJavaObject(pluginName);
-        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-        if (activity != null)
+        try
         {
-            Debug.Log("set context called");
-            AndroidJavaObject context = activity.Call<AndroidJavaObject>("getApplicationContext");
-            jc.Call("setContext", context);
+
+            jc = new AndroidJavaObject(pluginName);
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+            if (activity != null)
+            {
+                Debug.Log("set context called");
+                AndroidJavaObject context = activity.Call<AndroidJavaObject>("getApplicationContext");
+                jc.Call("setContext", context);
+            }
+            else
+            {
+                Debug.LogWarning("Activity is null!");
+            }
         }
-        else
+        catch(Exception e)
         {
-            Debug.LogWarning("Activity is null!");
+            Debug.LogWarning("error when calling Plugin.runner()! Error stack trace => " + e.StackTrace);
         }
 
         //1.get initial on/off state so that app shows initially light on/off

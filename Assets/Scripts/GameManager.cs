@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,12 +54,23 @@ public class GameManager : MonoBehaviour
 
         states = new List<bool>();
         ArrayList ar = null;
-        if (Plugin.instance.jc != null)
+
+        try
         {
+            Debug.Log("jc = " + Plugin.instance.jc);
+            Debug.Log("ar = " + ar);
             ar = Plugin.instance.jc.Call<ArrayList>("getStateInit");
         }
-        Debug.Log("jc = " + Plugin.instance.jc);
-        Debug.Log("ar = " + ar);
+        catch (Exception e)
+        {
+            Debug.LogWarning("couldn't call getStateInit! Error stack trace => " + e.StackTrace);
+        }
+
+        //if (Plugin.instance.jc != null)
+        //{
+        //    ar = Plugin.instance.jc.Call<ArrayList>("getStateInit");
+        //}
+
 
         if(ar == null)
         {
@@ -85,14 +97,23 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < states.Count; i++)
             Debug.Log(states[i]);
 
-        if (Plugin.instance.jc != null)
+        try
         {
             Plugin.instance.jc.Call("unsubscribe");
         }
-        else
+        catch(Exception e)
         {
-            Debug.LogWarning("jc null!");
+            Debug.LogWarning("couldn't call unsubscribe! Error stack trace => " + e.StackTrace);
         }
+
+        //if (Plugin.instance.jc != null)
+        //{
+        //    Plugin.instance.jc.Call("unsubscribe");
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("jc null!");
+        //}
     }
 
     public void RotateProp()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System;
 
 public class SetIPScript : MonoBehaviour
 {
@@ -19,7 +20,17 @@ public class SetIPScript : MonoBehaviour
     
     public void LoadMainScene()
     {
-        Plugin.instance.jc.Call("GetIPAddress", ip);
+
+        try
+        {
+            Plugin.instance.jc.Call("GetIPAddress", ip);
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("couldn't call GetIPAddress! Error stack trace => " + e.StackTrace);
+        }
+
+        //Plugin.instance.jc.Call("GetIPAddress", ip);
         SceneManager.LoadSceneAsync(1);
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,14 +64,25 @@ public class Light_Switching : Prop
             parent.GetChild(0).gameObject.SetActive(true);
         }
 
-        if (Plugin.instance.jc != null)
+
+        try
         {
+            Debug.Log("published"); 
             Plugin.instance.jc.Call("publish", gameObject.name[2]);
         }
-        else
+        catch (Exception e)
         {
-            Debug.LogWarning("jc null!");
+            Debug.LogWarning("couldn't call publish! Error stack trace => " + e.StackTrace);
         }
+
+        //if (Plugin.instance.jc != null)
+        //{
+        //    Plugin.instance.jc.Call("publish", gameObject.name[2]);
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("jc null!");
+        //}
         i = !i;
     }
 }
