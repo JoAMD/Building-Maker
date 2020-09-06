@@ -45,6 +45,7 @@ public class SpawnController : MonoBehaviour
         try
         {
             Debug.Log(Plugin.instance.jc);
+            Debug.Log("subscribeNewSwitch called");
             Plugin.instance.jc.Call("subscribeNewSwitch");
         }
         catch (Exception e)
@@ -122,6 +123,7 @@ public class SpawnController : MonoBehaviour
         {
             //_currentRoomRefs.propDetails.Add(new PropData(Vector3.zero, isFan, false)); // except arg 2 the rest are inaccurate and have to updated
             _currentRoomRefs.props.Add(prop_clone);
+            Debug.Log("check"+prop_clone.name.ToString());
             GameManager.instance.ctr++;
             prop_clone.localPosition = new Vector3(prop_clone.localPosition.x, onDragYCoord, prop_clone.localPosition.z);
         }

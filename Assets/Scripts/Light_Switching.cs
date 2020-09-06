@@ -67,8 +67,8 @@ public class Light_Switching : Prop
 
         try
         {
-            Debug.Log("published"); 
-            Plugin.instance.jc.Call("publish", gameObject.name[2]);
+            Debug.Log("published"+gameObject.name[2]); 
+            Plugin.instance.jc.Call("publish", gameObject.name[2].ToString());
         }
         catch (Exception e)
         {

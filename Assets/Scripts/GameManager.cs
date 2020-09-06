@@ -53,13 +53,26 @@ public class GameManager : MonoBehaviour
         //Plugin.instance.runner();
 
         states = new List<bool>();
-        ArrayList ar = null;
-
+        List<string> ar=new List<string>();
+        //List<string> x=new List<string>() ;
+        int x;
         try
-        {
+        { 
             Debug.Log("jc = " + Plugin.instance.jc);
-            Debug.Log("ar = " + ar);
-            ar = Plugin.instance.jc.Call<ArrayList>("getStateInit");
+            //Debug.Log("ar = " + ar);
+             x = Plugin.instance.jc.Call<int>("getLength");
+            Debug.Log("\n x=" + x);
+            if (x != 0) {
+                for (int i = 0; i < x; i++)
+                {
+                    Debug.Log("\n ar=" + i.ToString());
+                    Debug.Log("\n" + Plugin.instance.jc.Call<string>("getStateInit", i.ToString()));
+                    ar.Add(Plugin.instance.jc.Call<string>("getStateInit",i.ToString()));
+                }
+                Debug.Log("\n arLength=" + ar.IndexOf("sss"));
+            }
+            
+            //ar = Plugin.instance.jc.Call<ArrayList>("getStateInit");
         }
         catch (Exception e)
         {
@@ -74,7 +87,7 @@ public class GameManager : MonoBehaviour
 
         if(ar == null)
         {
-            ar = new ArrayList();
+            ar = new List<string>();
             ar.Add("1");
             ar.Add("0");
             ar.Add("1");
@@ -97,14 +110,14 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < states.Count; i++)
             Debug.Log(states[i]);
 
-        try
+       /* try
         {
             Plugin.instance.jc.Call("unsubscribe");
         }
         catch(Exception e)
         {
             Debug.LogWarning("couldn't call unsubscribe! Error stack trace => " + e.StackTrace);
-        }
+        }*/
 
         //if (Plugin.instance.jc != null)
         //{

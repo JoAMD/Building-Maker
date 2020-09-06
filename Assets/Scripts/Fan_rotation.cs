@@ -29,7 +29,7 @@ public class Fan_rotation : Prop
         try
         {
             Debug.Log("published");
-            Plugin.instance.jc.Call("publish", gameObject.name[2]);
+            Plugin.instance.jc.Call("publish", gameObject.name[2].ToString());
         }
         catch (Exception e)
         {
